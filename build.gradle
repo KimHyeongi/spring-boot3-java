@@ -1,0 +1,63 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+buildscript {
+    ext {
+        springBootVersion = '3.1.1'
+        springBootCloudVersion = '2022.0.3'
+        springBootVersionManagement = '1.1.0'
+        junitVersion = '5.9.3'
+        logbackVersion = '7.3'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id "io.spring.dependency-management" version "${springBootVersionManagement}"
+}
+
+allprojects {
+    group = "com.tistory.eclipse4j"
+    version = "0.0.1-SNAPSHOT"
+
+    repositories {
+        mavenCentral()
+        google()
+        maven {
+            url = uri("https://repo.spring.io/release")
+        }
+        maven {
+            url = uri("https://repository.jboss.org/maven2")
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+    dependencies {
+        implementation("org.projectlombok:lombok")
+        annotationProcessor("org.projectlombok:lombok")
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom(SpringBootPlugin.BOM_COORDINATES)
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+            mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springBootCloudVersion}")
+        }
+
+        dependencies {
+            dependency("net.logstash.logback:logstash-logback-encoder:${logbackVersion}")
+        }
+    }
+}

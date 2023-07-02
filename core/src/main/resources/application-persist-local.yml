@@ -1,0 +1,114 @@
+spring:
+  cloud:
+    compatibility-verifier:
+      enabled: false
+  jpa:
+    show-sql: true
+    properties:
+      javax.persistence.sharedCache.mode: ENABLE_SELECTIVE
+      hibernate.hbm2ddl.auto: update
+      javax:
+        persistence:
+          sharedCache:
+            mode: ALL
+      hibernate:
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        ddl-auto : update
+        format_sql: true
+        dialect: org.hibernate.dialect.MariaDB103Dialect
+        use-new-id-generator-mappings: false
+        globally_quoted_identifiers: true
+        use_sql_comments: true
+        cache:
+          use_second_level_cache: true
+          use_query_cache: true
+          region:
+            factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+
+  datasource:
+    hikari:
+      jpadb1:
+        driver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://127.0.0.1:3306/spring-tips-db1?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: githubstudy
+        password: githubstudy
+        minimum-idle: 2
+        maximum-pool-size: 5
+        max-lifetime: 50000
+        idle-timeout: 40000
+        type: com.zaxxer.hikari.HikariDataSource
+        auto-commit: false
+      jpadb2:
+        driver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://127.0.0.1:3306/spring-tips-db2?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: githubstudy
+        password: githubstudy
+        minimum-idle: 2
+        maximum-pool-size: 5
+        max-lifetime: 50000
+        idle-timeout: 40000
+        type: com.zaxxer.hikari.HikariDataSource
+        auto-commit: false
+  redis:
+    host: 127.0.0.1
+    port: 6566
+    lettuce:
+      pool:
+        max-active: 15
+        max-idle: 8
+        min-idle: 3
+        max-wait: -1
+      shutdown-timeout: 2000
+    timeout: 3000
+  redis-cached:
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 15
+        max-idle: 8
+        min-idle: 3
+        max-wait: -1
+      shutdown-timeout: 2000
+    timeout: 3000
+  redis-stored:
+    host: 127.0.0.1
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 15
+        max-idle: 8
+        min-idle: 3
+        max-wait: -1
+      shutdown-timeout: 2000
+    timeout: 3000
+  cache:
+    type: redis
+resilience4j:
+  retry:
+    retry-aspect-order: 2   # 서킷 이후 Retry
+    instances:
+      externalAuthApiRetry:
+        max-attempts: 3
+        wait-duration: 5s
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - org.springframework.web.client.RestClientException
+  #        ignore-exceptions:
+  #          - com........// Exception
+  circuitbreaker:
+    circuit-breaker-aspect-order: 1 # 서킷 먼저
+    instances:
+      externalAuthApiCircuitBreaker:
+        wait-duration-in-open-state: 1s
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-type: count-based
+        sliding-window-size: 5
+        minimum-number-of-calls: 5
+        slow-call-duration-threshold: 10s
+        slow-call-rate-threshold: 60
+        failure-rate-threshold: 10 # 10%

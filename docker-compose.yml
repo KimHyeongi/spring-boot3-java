@@ -1,0 +1,73 @@
+version: '3.1'
+
+services:
+  mysql1:
+    image: mysql:8.0.27
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    container_name: java-spring-boot-study_db1
+    ports:
+    - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: "Asia/Seoul"
+    volumes:
+    - mysql_data:/var/lib/mysql
+    networks:
+    - esnet
+    mem_reservation: 1g
+#  mysql2:
+#    image: mysql:8.0.27
+#    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+#    container_name: java-spring-boot-study_db2
+#    ports:
+#      - "3310:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      TZ: "Asia/Seoul"
+#    volumes:
+#      - mysql_data:/var/lib/mysql
+#    networks:
+#      - esnet
+#    mem_reservation: 512m
+  redis1:
+    container_name: java-spring-boot-study_redis0
+    command: redis-server --port 6379
+    hostname: redis-server
+    image: redis:6.2.6
+    ports:
+      - "6379:6379"
+    mem_reservation: 1g
+    networks:
+      - esnet
+#  redis2:
+#    container_name: java-spring-boot-study_redis1
+#    command: redis-server --port 6379
+#    hostname: redis-server
+#    image: redis:6.2.6
+#    ports:
+#      - "6567:6379"
+#    mem_reservation: 256m
+#    networks:
+#      - esnet
+#  localstack:
+#    image: localstack/localstack
+#    ports:
+#      - "4566-4597:4566-4597"
+#      - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
+#    environment:
+#      - DEFAULT_REGION=ap-northeast-2
+#      - SERVICES=${SERVICES- }
+#      - DEBUG=${DEBUG- }
+#      - DATA_DIR=${DATA_DIR- }
+#      - PORT_WEB_UI=${PORT_WEB_UI- }
+#      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- }
+#      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+#      - DOCKER_HOST=unix:///var/run/docker.sock
+#    volumes:
+#      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+#      - "/var/run/docker.sock:/var/run/docker.sock"
+volumes:
+  mysql_data:
+    driver: local
+networks:
+  esnet:

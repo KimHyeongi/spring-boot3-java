@@ -1,0 +1,21 @@
+plugins {
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':model')
+    implementation project(':core')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+jar {
+    enabled = false
+}
+
+bootJar {
+    enabled(true)
+    mainClass.set("com.tistory.eclipse4j.app.api.AppApiApplication")
+}
