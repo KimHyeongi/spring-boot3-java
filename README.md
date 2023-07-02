@@ -8,14 +8,14 @@ Hystrix 제거, Resilience4J(기본) 사용
 
 ### Spring Boot
 - Hystrix 예시 추가. 레디스캐시 1차 다운시 카페인 2차 캐시를 적용한다.
+
 ```java
 
-    /** findCacheableDtoById */
-    @GetMapping(path = "/companies/{companyId}")
-	public CompanyDto find(@PathVariable("companyId") Long companyId) {
-		CompanyDto companyDto = companyFindService.findCacheableDtoById(companyId);
-		return companyDto;
-	}
+@GetMapping(path = "/companies/{companyId}")
+public CompanyDto find(@PathVariable("companyId") Long companyId){
+        CompanyDto companyDto=companyFindService.findCacheableDtoById(companyId);
+        return companyDto;
+        }
 ```
 
 - SQLDelete Tip 추가 ( Soft Delete )
