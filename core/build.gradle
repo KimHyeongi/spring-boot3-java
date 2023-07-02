@@ -1,6 +1,16 @@
 plugins {
 }
 
+ext {
+    commonslang3Version = '3.12.0'
+    commonspool2Version = '2.11.1'
+    caffeineVersion = '3.1.6'
+    querydslVersion = '5.0.0'
+    hypersistenceVersion = '3.5.1'
+    enversVersion = '6.2.6.Final'
+    jacksonxmlbindVersion = '2.15.2'
+}
+
 bootJar { enabled = false}
 jar {enabled = true}
 
@@ -12,17 +22,17 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-cache")
     api("org.springframework.boot:spring-boot-starter-data-redis")
 
-    api("org.apache.commons:commons-lang3:3.12.0")
-    api("org.apache.commons:commons-pool2:2.11.1")
-    api("com.github.ben-manes.caffeine:caffeine:3.0.5")
+    api("org.apache.commons:commons-lang3:${commonslang3Version}")
+    api("org.apache.commons:commons-pool2:${commonspool2Version}")
+    api("com.github.ben-manes.caffeine:caffeine:${caffeineVersion}")
 
     implementation("org.postgresql:postgresql")
     implementation("com.h2database:h2")
-    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-    implementation("com.querydsl:querydsl-core:5.0.0")
-    implementation("io.hypersistence:hypersistence-utils-hibernate-62:3.5.1")
-    implementation("org.hibernate.orm:hibernate-envers:6.2.6.Final")
-    implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:2.15.2")
+    implementation("com.querydsl:querydsl-jpa:${querydslVersion}:jakarta")
+    implementation("com.querydsl:querydsl-core:${querydslVersion}")
+    implementation("io.hypersistence:hypersistence-utils-hibernate-62:${hypersistenceVersion}")
+    implementation("org.hibernate.orm:hibernate-envers:${enversVersion}")
+    implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:${jacksonxmlbindVersion}")
 
     annotationProcessor("jakarta.persistence:jakarta.persistence-api")
     annotationProcessor("jakarta.annotation:jakarta.annotation-api")
